@@ -1,8 +1,52 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<TodoApp.Domain.Entities.TodoItem>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Todo List</h1>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label for="title" class="mb-1">New Task</label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="Enter task title" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Task</button>
+</form>
+
+<hr />
+
+<ul class="list-group">
+    @foreach (var todo in Model)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            @todo.Title
+            <div>
+                @if (!todo.IsCompleted)
+                {
+                    <form asp-action="Complete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@todo.Id" />
+                        <button type="submit" class="btn btn-success btn-sm">Complete</button>
+                    </form>
+                }
+                <form asp-action="Delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@todo.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
+        </li>
+    }
+</ul>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const title = document.querySelector('#title').value;
+
+        fetch('/Home/Add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `title=${encodeURIComponent(title)}`,
+        }).then(() => {
+            window.location.reload();
+        });
+    });
+</script>

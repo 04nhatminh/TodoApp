@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,32 @@ namespace TodoApp.Infrastructure
     {
         private readonly List<TodoItem> _items = new List<TodoItem>();
 
-        public void Add(TodoItem item) => _items.Add(item);
-        public IEnumerable<TodoItem> GetAll() => _items;
+        public void Add(TodoItem item)
+        {
+            Debug.WriteLine($"Adding task in Repo: {item.Title}");
+            _items.Add(item);
+        }
+
+        public IEnumerable<TodoItem> GetAll()
+        {
+            return _items;
+        }
         public void MarkCompleted(Guid id)
         {
             var item = _items.FirstOrDefault(x => x.Id == id);
-            if (item != null) item.IsCompleted = true;
+            if (item != null)
+            {
+                item.IsCompleted = true;
+            }
         }
-        public void Delete(Guid id) => _items.RemoveAll(x => x.Id == id);
+
+        public void Delete(Guid id)
+        {
+            var item = _items.FirstOrDefault(x => x.Id == id);
+            if (item != null)
+            {
+                _items.Remove(item);
+            }
+        }
     }
 }

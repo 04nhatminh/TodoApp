@@ -1,32 +1,60 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TodoApp.Application.Services;
+using TodoApp.Domain.Entities;
+using TodoApp.Domain.Interfaces;
+using TodoApp.Infrastructure;
 using TodoApp.Web.Models;
 
 namespace TodoApp.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly TodoService _service;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ITodoRepository repository)
         {
-            _logger = logger;
+            _service = new TodoService(repository);
         }
 
         public IActionResult Index()
         {
-            return View();
+            //var mockItems = new List<TodoItem>
+            //{
+            //    new TodoItem { Id = Guid.NewGuid(), Title = "Học C#", IsCompleted = false },
+            //    new TodoItem { Id = Guid.NewGuid(), Title = "Làm bài tập Clean Architecture", IsCompleted = true },
+            //    new TodoItem { Id = Guid.NewGuid(), Title = "Viết báo cáo", IsCompleted = false },
+            //};
+
+            //return View(mockItems);
+
+            var todos = _service.GetAll();
+            return View(todos);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult Add(string title)
         {
-            return View();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                Debug.WriteLine($"Adding task: {title}");
+                _service.Add(title);
+            }
+            return RedirectToAction("Index");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Complete(Guid id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            _service.Complete(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Guid id)
+        {
+            _service.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

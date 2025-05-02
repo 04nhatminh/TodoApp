@@ -1,7 +1,14 @@
+using TodoApp.Application.Services;
+using TodoApp.Domain.Interfaces;
+using TodoApp.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<ITodoRepository, InMemoryTodoRepository>();
+builder.Services.AddScoped<TodoService>();
 
 var app = builder.Build();
 

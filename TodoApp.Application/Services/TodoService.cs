@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,28 @@ namespace TodoApp.Application.Services
 
         public void Add(string title)
         {
-            var item = new TodoItem { Title = title };
-            _repository.Add(item);
+            var newItem = new TodoItem
+            {
+                Id = Guid.NewGuid(),
+                Title = title
+            };
+            Debug.WriteLine($"Adding task in service: {title}");
+            _repository.Add(newItem);
         }
 
-        public IEnumerable<TodoItem> GetAll() => _repository.GetAll();
+        public IEnumerable<TodoItem> GetAll()
+        {
+            return _repository.GetAll();
+        }
 
-        public void Complete(Guid id) => _repository.MarkCompleted(id);
+        public void Complete(Guid id)
+        {
+            _repository.MarkCompleted(id);
+        }
 
-        public void Delete(Guid id) => _repository.Delete(id);
+        public void Delete(Guid id)
+        {
+            _repository.Delete(id);
+        }
     }
 }
