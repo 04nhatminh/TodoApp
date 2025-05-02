@@ -27,8 +27,8 @@ TÍNH NĂNG CHÍNH
 ---------------
 ✔ Xem danh sách công việc  
 ✔ Thêm công việc mới  
-✔ Xóa công việc mới 
-✔ Đánh dấu hoàn thành công việc
+✔ Xóa công việc  
+✔ Đánh dấu hoàn thành công việc  
 ✔ Danh sách tự động cập nhật sau khi thêm/xóa
 
 
@@ -41,13 +41,13 @@ TƯ DUY CLEAN ARCHITECTURE
 
 THÔNG TIN KỸ THUẬT
 ------------------
-- ASP.NET Core MVC (.NET 8)
+- ASP.NET Core MVC (.NET 8.0)
 - Razor View Engine
-- Dữ liệu tạm thời lưu bằng InMemory Repository (List<TodoItem>)
+- Dữ liệu tạm thời lưu bằng InMemory Repository (`List<TodoItem>`)
 
 LIÊN HỆ / HỖ TRỢ
 ---------------
-Người phát triển: [Nguyễn Nhật Minh]
+Người phát triển: [Nguyễn Nhật Minh]  
 Email: [04nhatminh@gmail.com]  
-Github: [[link nếu](https://github.com/04nhatminh)]
+Github: [https://github.com/04nhatminh]
 
